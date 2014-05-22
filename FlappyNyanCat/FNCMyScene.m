@@ -451,6 +451,18 @@ static NSString *const kNombreFont = @"AmericanTypewriter-Bold";
     }];
 }
 
+
+- (int)mejorPuntaje
+{
+    return [[NSUserDefaults standardUserDefaults]integerForKey:@"mejorPuntaje"];
+}
+
+- (void)asignarMejorPuntaje:(int)mejorPuntaje
+{
+    [[NSUserDefaults standardUserDefaults]setInteger:mejorPuntaje forKey:@"mejorPuntaje"];
+    [[NSUserDefaults standardUserDefaults]synchronize];
+}
+
 #pragma mark - Contact Delegates
 - (void)didBeginContact:(SKPhysicsContact *)contact
 {
@@ -465,9 +477,9 @@ static NSString *const kNombreFont = @"AmericanTypewriter-Bold";
         _chocoObstaculo = YES;
         return;
     }
-    
-    
 }
+
+
 
 
 
