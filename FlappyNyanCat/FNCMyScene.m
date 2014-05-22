@@ -163,6 +163,7 @@ static NSString *const kNombreFont = @"AmericanTypewriter-Bold";
 {
     SKSpriteNode *sprite = [SKSpriteNode spriteNodeWithImageNamed:@"Cactus"];
     sprite.zPosition = CapaObstaculo;
+    sprite.userData = [NSMutableDictionary dictionary];
     
     
     CGFloat offsetX = sprite.frame.size.width * sprite.anchorPoint.x;
@@ -310,6 +311,7 @@ static NSString *const kNombreFont = @"AmericanTypewriter-Bold";
             [self actualizarFondo];
             [self verificarChocoFondo];
             [self verificarChocoObstaculo];
+            [self actualizarPuntaje];
         break;
             
         case EstadoJuegoColision:
@@ -398,6 +400,24 @@ static NSString *const kNombreFont = @"AmericanTypewriter-Bold";
     
     [self actualizarObstaculos];
     [self flapNyanCat];
+}
+
+- (void)actualizarPuntaje
+{
+    [_nodoMundo enumerateChildNodesWithName:@"ObstaculoInferior" usingBlock:^(SKNode *node, BOOL *stop) {
+        SKSpriteNode *obstaculo = (SKSpriteNode*)node;
+        NSNumber *paso = obstaculo.userData[@"Paso"];
+        
+        if (paso && paso.boolValue) {
+            return;
+        }
+        
+        if (_jugador.position.x > obstaculo.position.x + obstaculo.size.width/2) {
+            _puntaje++;
+            _etiquetaPuntaje.text = [NSString stringWithFormat:@"%d", _puntaje];
+            obstaculo.userData[@"Paso"] = @YES;
+        }
+    }];
 }
 
 
