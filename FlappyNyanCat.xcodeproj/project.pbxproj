@@ -1,0 +1,602 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A6DB678A192D3363004A9983 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6DB6789192D3363004A9983 /* Foundation.framework */; };
+		A6DB678C192D3363004A9983 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6DB678B192D3363004A9983 /* CoreGraphics.framework */; };
+		A6DB678E192D3363004A9983 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6DB678D192D3363004A9983 /* UIKit.framework */; };
+		A6DB6790192D3363004A9983 /* SpriteKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6DB678F192D3363004A9983 /* SpriteKit.framework */; };
+		A6DB6796192D3363004A9983 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A6DB6794192D3363004A9983 /* InfoPlist.strings */; };
+		A6DB6798192D3363004A9983 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A6DB6797192D3363004A9983 /* main.m */; };
+		A6DB679C192D3363004A9983 /* FNCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A6DB679B192D3363004A9983 /* FNCAppDelegate.m */; };
+		A6DB679F192D3363004A9983 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A6DB679D192D3363004A9983 /* Main.storyboard */; };
+		A6DB67A2192D3363004A9983 /* FNCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6DB67A1192D3363004A9983 /* FNCViewController.m */; };
+		A6DB67A5192D3363004A9983 /* FNCMyScene.m in Sources */ = {isa = PBXBuildFile; fileRef = A6DB67A4192D3363004A9983 /* FNCMyScene.m */; };
+		A6DB67A7192D3363004A9983 /* Spaceship.png in Resources */ = {isa = PBXBuildFile; fileRef = A6DB67A6192D3363004A9983 /* Spaceship.png */; };
+		A6DB67A9192D3363004A9983 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A6DB67A8192D3363004A9983 /* Images.xcassets */; };
+		A6DB67B0192D3363004A9983 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6DB67AF192D3363004A9983 /* XCTest.framework */; };
+		A6DB67B1192D3363004A9983 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6DB6789192D3363004A9983 /* Foundation.framework */; };
+		A6DB67B2192D3363004A9983 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6DB678D192D3363004A9983 /* UIKit.framework */; };
+		A6DB67BA192D3363004A9983 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A6DB67B8192D3363004A9983 /* InfoPlist.strings */; };
+		A6DB67BC192D3363004A9983 /* FlappyNyanCatTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A6DB67BB192D3363004A9983 /* FlappyNyanCatTests.m */; };
+		A6DB67E0192D34D9004A9983 /* backgrounds.atlas in Resources */ = {isa = PBXBuildFile; fileRef = A6DB67C9192D34D9004A9983 /* backgrounds.atlas */; };
+		A6DB67E1192D34D9004A9983 /* SKAction+SKTExtras.m in Sources */ = {isa = PBXBuildFile; fileRef = A6DB67CC192D34D9004A9983 /* SKAction+SKTExtras.m */; };
+		A6DB67E2192D34D9004A9983 /* SKAction+SKTSpecialEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = A6DB67CE192D34D9004A9983 /* SKAction+SKTSpecialEffects.m */; };
+		A6DB67E3192D34D9004A9983 /* SKEmitterNode+SKTExtras.m in Sources */ = {isa = PBXBuildFile; fileRef = A6DB67D0192D34D9004A9983 /* SKEmitterNode+SKTExtras.m */; };
+		A6DB67E4192D34D9004A9983 /* SKNode+SKTDebugDraw.m in Sources */ = {isa = PBXBuildFile; fileRef = A6DB67D2192D34D9004A9983 /* SKNode+SKTDebugDraw.m */; };
+		A6DB67E5192D34D9004A9983 /* SKNode+SKTExtras.m in Sources */ = {isa = PBXBuildFile; fileRef = A6DB67D4192D34D9004A9983 /* SKNode+SKTExtras.m */; };
+		A6DB67E6192D34D9004A9983 /* SKTAudio.m in Sources */ = {isa = PBXBuildFile; fileRef = A6DB67D6192D34D9004A9983 /* SKTAudio.m */; };
+		A6DB67E7192D34D9004A9983 /* SKTEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = A6DB67D8192D34D9004A9983 /* SKTEffects.m */; };
+		A6DB67E8192D34D9004A9983 /* SKTTimingFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = A6DB67DA192D34D9004A9983 /* SKTTimingFunctions.m */; };
+		A6DB67E9192D34D9004A9983 /* flapping.wav in Resources */ = {isa = PBXBuildFile; fileRef = A6DB67DD192D34D9004A9983 /* flapping.wav */; };
+		A6DB67EA192D34D9004A9983 /* whack.wav in Resources */ = {isa = PBXBuildFile; fileRef = A6DB67DE192D34D9004A9983 /* whack.wav */; };
+		A6DB67EB192D34D9004A9983 /* sprites.atlas in Resources */ = {isa = PBXBuildFile; fileRef = A6DB67DF192D34D9004A9983 /* sprites.atlas */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A6DB67B3192D3363004A9983 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A6DB677E192D3363004A9983 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A6DB6785192D3363004A9983;
+			remoteInfo = FlappyNyanCat;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		A6DB6786192D3363004A9983 /* FlappyNyanCat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlappyNyanCat.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6DB6789192D3363004A9983 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		A6DB678B192D3363004A9983 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		A6DB678D192D3363004A9983 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		A6DB678F192D3363004A9983 /* SpriteKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SpriteKit.framework; path = System/Library/Frameworks/SpriteKit.framework; sourceTree = SDKROOT; };
+		A6DB6793192D3363004A9983 /* FlappyNyanCat-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "FlappyNyanCat-Info.plist"; sourceTree = "<group>"; };
+		A6DB6795192D3363004A9983 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		A6DB6797192D3363004A9983 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		A6DB6799192D3363004A9983 /* FlappyNyanCat-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FlappyNyanCat-Prefix.pch"; sourceTree = "<group>"; };
+		A6DB679A192D3363004A9983 /* FNCAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FNCAppDelegate.h; sourceTree = "<group>"; };
+		A6DB679B192D3363004A9983 /* FNCAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FNCAppDelegate.m; sourceTree = "<group>"; };
+		A6DB679E192D3363004A9983 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		A6DB67A0192D3363004A9983 /* FNCViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FNCViewController.h; sourceTree = "<group>"; };
+		A6DB67A1192D3363004A9983 /* FNCViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FNCViewController.m; sourceTree = "<group>"; };
+		A6DB67A3192D3363004A9983 /* FNCMyScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FNCMyScene.h; sourceTree = "<group>"; };
+		A6DB67A4192D3363004A9983 /* FNCMyScene.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FNCMyScene.m; sourceTree = "<group>"; };
+		A6DB67A6192D3363004A9983 /* Spaceship.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Spaceship.png; sourceTree = "<group>"; };
+		A6DB67A8192D3363004A9983 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		A6DB67AE192D3363004A9983 /* FlappyNyanCatTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FlappyNyanCatTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6DB67AF192D3363004A9983 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		A6DB67B7192D3363004A9983 /* FlappyNyanCatTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "FlappyNyanCatTests-Info.plist"; sourceTree = "<group>"; };
+		A6DB67B9192D3363004A9983 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		A6DB67BB192D3363004A9983 /* FlappyNyanCatTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FlappyNyanCatTests.m; sourceTree = "<group>"; };
+		A6DB67C9192D34D9004A9983 /* backgrounds.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = backgrounds.atlas; sourceTree = "<group>"; };
+		A6DB67CB192D34D9004A9983 /* SKAction+SKTExtras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SKAction+SKTExtras.h"; sourceTree = "<group>"; };
+		A6DB67CC192D34D9004A9983 /* SKAction+SKTExtras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SKAction+SKTExtras.m"; sourceTree = "<group>"; };
+		A6DB67CD192D34D9004A9983 /* SKAction+SKTSpecialEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SKAction+SKTSpecialEffects.h"; sourceTree = "<group>"; };
+		A6DB67CE192D34D9004A9983 /* SKAction+SKTSpecialEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SKAction+SKTSpecialEffects.m"; sourceTree = "<group>"; };
+		A6DB67CF192D34D9004A9983 /* SKEmitterNode+SKTExtras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SKEmitterNode+SKTExtras.h"; sourceTree = "<group>"; };
+		A6DB67D0192D34D9004A9983 /* SKEmitterNode+SKTExtras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SKEmitterNode+SKTExtras.m"; sourceTree = "<group>"; };
+		A6DB67D1192D34D9004A9983 /* SKNode+SKTDebugDraw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SKNode+SKTDebugDraw.h"; sourceTree = "<group>"; };
+		A6DB67D2192D34D9004A9983 /* SKNode+SKTDebugDraw.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SKNode+SKTDebugDraw.m"; sourceTree = "<group>"; };
+		A6DB67D3192D34D9004A9983 /* SKNode+SKTExtras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SKNode+SKTExtras.h"; sourceTree = "<group>"; };
+		A6DB67D4192D34D9004A9983 /* SKNode+SKTExtras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SKNode+SKTExtras.m"; sourceTree = "<group>"; };
+		A6DB67D5192D34D9004A9983 /* SKTAudio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKTAudio.h; sourceTree = "<group>"; };
+		A6DB67D6192D34D9004A9983 /* SKTAudio.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKTAudio.m; sourceTree = "<group>"; };
+		A6DB67D7192D34D9004A9983 /* SKTEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKTEffects.h; sourceTree = "<group>"; };
+		A6DB67D8192D34D9004A9983 /* SKTEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKTEffects.m; sourceTree = "<group>"; };
+		A6DB67D9192D34D9004A9983 /* SKTTimingFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKTTimingFunctions.h; sourceTree = "<group>"; };
+		A6DB67DA192D34D9004A9983 /* SKTTimingFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKTTimingFunctions.m; sourceTree = "<group>"; };
+		A6DB67DB192D34D9004A9983 /* SKTUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKTUtils.h; sourceTree = "<group>"; };
+		A6DB67DD192D34D9004A9983 /* flapping.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = flapping.wav; sourceTree = "<group>"; };
+		A6DB67DE192D34D9004A9983 /* whack.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = whack.wav; sourceTree = "<group>"; };
+		A6DB67DF192D34D9004A9983 /* sprites.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = sprites.atlas; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A6DB6783192D3363004A9983 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A6DB678C192D3363004A9983 /* CoreGraphics.framework in Frameworks */,
+				A6DB678E192D3363004A9983 /* UIKit.framework in Frameworks */,
+				A6DB6790192D3363004A9983 /* SpriteKit.framework in Frameworks */,
+				A6DB678A192D3363004A9983 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A6DB67AB192D3363004A9983 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A6DB67B0192D3363004A9983 /* XCTest.framework in Frameworks */,
+				A6DB67B2192D3363004A9983 /* UIKit.framework in Frameworks */,
+				A6DB67B1192D3363004A9983 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A6DB677D192D3363004A9983 = {
+			isa = PBXGroup;
+			children = (
+				A6DB6791192D3363004A9983 /* FlappyNyanCat */,
+				A6DB67B5192D3363004A9983 /* FlappyNyanCatTests */,
+				A6DB6788192D3363004A9983 /* Frameworks */,
+				A6DB6787192D3363004A9983 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A6DB6787192D3363004A9983 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A6DB6786192D3363004A9983 /* FlappyNyanCat.app */,
+				A6DB67AE192D3363004A9983 /* FlappyNyanCatTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A6DB6788192D3363004A9983 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A6DB6789192D3363004A9983 /* Foundation.framework */,
+				A6DB678B192D3363004A9983 /* CoreGraphics.framework */,
+				A6DB678D192D3363004A9983 /* UIKit.framework */,
+				A6DB678F192D3363004A9983 /* SpriteKit.framework */,
+				A6DB67AF192D3363004A9983 /* XCTest.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A6DB6791192D3363004A9983 /* FlappyNyanCat */ = {
+			isa = PBXGroup;
+			children = (
+				A6DB67C8192D34C8004A9983 /* Resources */,
+				A6DB67C7192D3394004A9983 /* ViewControllers */,
+				A6DB67C6192D3387004A9983 /* Scenes */,
+				A6DB67C5192D3378004A9983 /* BaseApp */,
+				A6DB679D192D3363004A9983 /* Main.storyboard */,
+				A6DB67A6192D3363004A9983 /* Spaceship.png */,
+				A6DB67A8192D3363004A9983 /* Images.xcassets */,
+				A6DB6792192D3363004A9983 /* Supporting Files */,
+			);
+			path = FlappyNyanCat;
+			sourceTree = "<group>";
+		};
+		A6DB6792192D3363004A9983 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				A6DB6793192D3363004A9983 /* FlappyNyanCat-Info.plist */,
+				A6DB6794192D3363004A9983 /* InfoPlist.strings */,
+				A6DB6797192D3363004A9983 /* main.m */,
+				A6DB6799192D3363004A9983 /* FlappyNyanCat-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		A6DB67B5192D3363004A9983 /* FlappyNyanCatTests */ = {
+			isa = PBXGroup;
+			children = (
+				A6DB67BB192D3363004A9983 /* FlappyNyanCatTests.m */,
+				A6DB67B6192D3363004A9983 /* Supporting Files */,
+			);
+			path = FlappyNyanCatTests;
+			sourceTree = "<group>";
+		};
+		A6DB67B6192D3363004A9983 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				A6DB67B7192D3363004A9983 /* FlappyNyanCatTests-Info.plist */,
+				A6DB67B8192D3363004A9983 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		A6DB67C5192D3378004A9983 /* BaseApp */ = {
+			isa = PBXGroup;
+			children = (
+				A6DB679A192D3363004A9983 /* FNCAppDelegate.h */,
+				A6DB679B192D3363004A9983 /* FNCAppDelegate.m */,
+			);
+			name = BaseApp;
+			sourceTree = "<group>";
+		};
+		A6DB67C6192D3387004A9983 /* Scenes */ = {
+			isa = PBXGroup;
+			children = (
+				A6DB67A3192D3363004A9983 /* FNCMyScene.h */,
+				A6DB67A4192D3363004A9983 /* FNCMyScene.m */,
+			);
+			name = Scenes;
+			sourceTree = "<group>";
+		};
+		A6DB67C7192D3394004A9983 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				A6DB67A0192D3363004A9983 /* FNCViewController.h */,
+				A6DB67A1192D3363004A9983 /* FNCViewController.m */,
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		A6DB67C8192D34C8004A9983 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A6DB67C9192D34D9004A9983 /* backgrounds.atlas */,
+				A6DB67CA192D34D9004A9983 /* SKTUtilidades */,
+				A6DB67DC192D34D9004A9983 /* Sonidos */,
+				A6DB67DF192D34D9004A9983 /* sprites.atlas */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		A6DB67CA192D34D9004A9983 /* SKTUtilidades */ = {
+			isa = PBXGroup;
+			children = (
+				A6DB67CB192D34D9004A9983 /* SKAction+SKTExtras.h */,
+				A6DB67CC192D34D9004A9983 /* SKAction+SKTExtras.m */,
+				A6DB67CD192D34D9004A9983 /* SKAction+SKTSpecialEffects.h */,
+				A6DB67CE192D34D9004A9983 /* SKAction+SKTSpecialEffects.m */,
+				A6DB67CF192D34D9004A9983 /* SKEmitterNode+SKTExtras.h */,
+				A6DB67D0192D34D9004A9983 /* SKEmitterNode+SKTExtras.m */,
+				A6DB67D1192D34D9004A9983 /* SKNode+SKTDebugDraw.h */,
+				A6DB67D2192D34D9004A9983 /* SKNode+SKTDebugDraw.m */,
+				A6DB67D3192D34D9004A9983 /* SKNode+SKTExtras.h */,
+				A6DB67D4192D34D9004A9983 /* SKNode+SKTExtras.m */,
+				A6DB67D5192D34D9004A9983 /* SKTAudio.h */,
+				A6DB67D6192D34D9004A9983 /* SKTAudio.m */,
+				A6DB67D7192D34D9004A9983 /* SKTEffects.h */,
+				A6DB67D8192D34D9004A9983 /* SKTEffects.m */,
+				A6DB67D9192D34D9004A9983 /* SKTTimingFunctions.h */,
+				A6DB67DA192D34D9004A9983 /* SKTTimingFunctions.m */,
+				A6DB67DB192D34D9004A9983 /* SKTUtils.h */,
+			);
+			path = SKTUtilidades;
+			sourceTree = "<group>";
+		};
+		A6DB67DC192D34D9004A9983 /* Sonidos */ = {
+			isa = PBXGroup;
+			children = (
+				A6DB67DD192D34D9004A9983 /* flapping.wav */,
+				A6DB67DE192D34D9004A9983 /* whack.wav */,
+			);
+			path = Sonidos;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A6DB6785192D3363004A9983 /* FlappyNyanCat */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A6DB67BF192D3363004A9983 /* Build configuration list for PBXNativeTarget "FlappyNyanCat" */;
+			buildPhases = (
+				A6DB6782192D3363004A9983 /* Sources */,
+				A6DB6783192D3363004A9983 /* Frameworks */,
+				A6DB6784192D3363004A9983 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FlappyNyanCat;
+			productName = FlappyNyanCat;
+			productReference = A6DB6786192D3363004A9983 /* FlappyNyanCat.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A6DB67AD192D3363004A9983 /* FlappyNyanCatTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A6DB67C2192D3363004A9983 /* Build configuration list for PBXNativeTarget "FlappyNyanCatTests" */;
+			buildPhases = (
+				A6DB67AA192D3363004A9983 /* Sources */,
+				A6DB67AB192D3363004A9983 /* Frameworks */,
+				A6DB67AC192D3363004A9983 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A6DB67B4192D3363004A9983 /* PBXTargetDependency */,
+			);
+			name = FlappyNyanCatTests;
+			productName = FlappyNyanCatTests;
+			productReference = A6DB67AE192D3363004A9983 /* FlappyNyanCatTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A6DB677E192D3363004A9983 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = FNC;
+				LastUpgradeCheck = 0510;
+				ORGANIZATIONNAME = "Jaime Yesid Leon Parada";
+				TargetAttributes = {
+					A6DB67AD192D3363004A9983 = {
+						TestTargetID = A6DB6785192D3363004A9983;
+					};
+				};
+			};
+			buildConfigurationList = A6DB6781192D3363004A9983 /* Build configuration list for PBXProject "FlappyNyanCat" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A6DB677D192D3363004A9983;
+			productRefGroup = A6DB6787192D3363004A9983 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A6DB6785192D3363004A9983 /* FlappyNyanCat */,
+				A6DB67AD192D3363004A9983 /* FlappyNyanCatTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A6DB6784192D3363004A9983 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A6DB6796192D3363004A9983 /* InfoPlist.strings in Resources */,
+				A6DB67A9192D3363004A9983 /* Images.xcassets in Resources */,
+				A6DB67EB192D34D9004A9983 /* sprites.atlas in Resources */,
+				A6DB67E0192D34D9004A9983 /* backgrounds.atlas in Resources */,
+				A6DB67E9192D34D9004A9983 /* flapping.wav in Resources */,
+				A6DB67A7192D3363004A9983 /* Spaceship.png in Resources */,
+				A6DB67EA192D34D9004A9983 /* whack.wav in Resources */,
+				A6DB679F192D3363004A9983 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A6DB67AC192D3363004A9983 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A6DB67BA192D3363004A9983 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A6DB6782192D3363004A9983 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A6DB679C192D3363004A9983 /* FNCAppDelegate.m in Sources */,
+				A6DB67E7192D34D9004A9983 /* SKTEffects.m in Sources */,
+				A6DB67E5192D34D9004A9983 /* SKNode+SKTExtras.m in Sources */,
+				A6DB6798192D3363004A9983 /* main.m in Sources */,
+				A6DB67E3192D34D9004A9983 /* SKEmitterNode+SKTExtras.m in Sources */,
+				A6DB67E1192D34D9004A9983 /* SKAction+SKTExtras.m in Sources */,
+				A6DB67E8192D34D9004A9983 /* SKTTimingFunctions.m in Sources */,
+				A6DB67A5192D3363004A9983 /* FNCMyScene.m in Sources */,
+				A6DB67A2192D3363004A9983 /* FNCViewController.m in Sources */,
+				A6DB67E4192D34D9004A9983 /* SKNode+SKTDebugDraw.m in Sources */,
+				A6DB67E2192D34D9004A9983 /* SKAction+SKTSpecialEffects.m in Sources */,
+				A6DB67E6192D34D9004A9983 /* SKTAudio.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A6DB67AA192D3363004A9983 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A6DB67BC192D3363004A9983 /* FlappyNyanCatTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A6DB67B4192D3363004A9983 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A6DB6785192D3363004A9983 /* FlappyNyanCat */;
+			targetProxy = A6DB67B3192D3363004A9983 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		A6DB6794192D3363004A9983 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A6DB6795192D3363004A9983 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		A6DB679D192D3363004A9983 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A6DB679E192D3363004A9983 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		A6DB67B8192D3363004A9983 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A6DB67B9192D3363004A9983 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		A6DB67BD192D3363004A9983 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		A6DB67BE192D3363004A9983 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A6DB67C0192D3363004A9983 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "FlappyNyanCat/FlappyNyanCat-Prefix.pch";
+				INFOPLIST_FILE = "FlappyNyanCat/FlappyNyanCat-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SPRITEKIT_TEXTURE_ATLAS_OUTPUT = YES;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		A6DB67C1192D3363004A9983 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "FlappyNyanCat/FlappyNyanCat-Prefix.pch";
+				INFOPLIST_FILE = "FlappyNyanCat/FlappyNyanCat-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SPRITEKIT_TEXTURE_ATLAS_OUTPUT = YES;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		A6DB67C3192D3363004A9983 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/FlappyNyanCat.app/FlappyNyanCat";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "FlappyNyanCat/FlappyNyanCat-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "FlappyNyanCatTests/FlappyNyanCatTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		A6DB67C4192D3363004A9983 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/FlappyNyanCat.app/FlappyNyanCat";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "FlappyNyanCat/FlappyNyanCat-Prefix.pch";
+				INFOPLIST_FILE = "FlappyNyanCatTests/FlappyNyanCatTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A6DB6781192D3363004A9983 /* Build configuration list for PBXProject "FlappyNyanCat" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A6DB67BD192D3363004A9983 /* Debug */,
+				A6DB67BE192D3363004A9983 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A6DB67BF192D3363004A9983 /* Build configuration list for PBXNativeTarget "FlappyNyanCat" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A6DB67C0192D3363004A9983 /* Debug */,
+				A6DB67C1192D3363004A9983 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		A6DB67C2192D3363004A9983 /* Build configuration list for PBXNativeTarget "FlappyNyanCatTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A6DB67C3192D3363004A9983 /* Debug */,
+				A6DB67C4192D3363004A9983 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A6DB677E192D3363004A9983 /* Project object */;
+}
