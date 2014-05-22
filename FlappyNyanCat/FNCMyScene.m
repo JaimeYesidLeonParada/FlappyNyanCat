@@ -11,7 +11,8 @@
 typedef NS_ENUM(int,layer) {
     CapaFondo,
     CapaObstaculo,
-    CapaJugador
+    CapaJugador,
+    CapaUI
 };
 
 typedef NS_OPTIONS(int, categoriaEntidad)
@@ -44,7 +45,7 @@ static const float kSiempreDelay = 1.5;
     
     SKAction *_accionFlap;
     SKAction *_accionCaer;
-    SKAction *_accionChocarFondo;
+    SKAction *_accionChoco;
     
     
     CGPoint _velocidadJugador;
@@ -60,15 +61,15 @@ static const float kSiempreDelay = 1.5;
     {
         _nodoMundo = [SKNode node];
         [self addChild:_nodoMundo];
-        [self asignarFondo];
-        [self asignarJugador];
-        [self actualizarObstaculos];
         
         _estadoJuego = EstadoJuegoJugar;
         self.physicsWorld.gravity = CGVectorMake(0, 0);
         self.physicsWorld.contactDelegate = self;
         
-        [self flapNyanCat];
+        //[self flapNyanCat];
+        
+        [self cambiarATutorial];
+        
     }
     return self;
 }
@@ -92,10 +93,25 @@ static const float kSiempreDelay = 1.5;
     CGPoint derechaB = CGPointMake(self.size.width, _limiteComienzo + 11);
     
     self.physicsBody = [SKPhysicsBody bodyWithEdgeFromPoint:izquierdaB toPoint:derechaB];
-    [self skt_attachDebugLineFromPoint:izquierdaB toPoint:derechaB color:[UIColor redColor]];
+    //[self skt_attachDebugLineFromPoint:izquierdaB toPoint:derechaB color:[UIColor redColor]];
     self.physicsBody.categoryBitMask = categoriaEntidadFondo;
     self.physicsBody.collisionBitMask = 0;
     self.physicsBody.contactTestBitMask = categoriaEntidadJugador;
+}
+
+- (void)asignarTutorial
+{
+    SKSpriteNode *tutorial = [SKSpriteNode spriteNodeWithImageNamed:@"Tutorial"];
+    tutorial.position = CGPointMake((int)self.size.width *0.5, (int)_limiteAltura * 0.4 + _limiteComienzo);
+    tutorial.name = @"Tutorial";
+    tutorial.zPosition = CapaUI;
+    [_nodoMundo addChild:tutorial];
+    
+    SKSpriteNode *ready = [SKSpriteNode spriteNodeWithImageNamed:@"Ready"];
+    ready.position = CGPointMake(self.size.width * 0.5, _limiteAltura * 0.7 + _limiteComienzo);
+    ready.name = @"Tutorial";
+    ready.zPosition = CapaUI;
+    [_nodoMundo addChild:ready];
 }
 
 - (void)asignarJugador
@@ -121,7 +137,7 @@ static const float kSiempreDelay = 1.5;
     
     _jugador.physicsBody = [SKPhysicsBody bodyWithPolygonFromPath:path];
     
-    [_jugador skt_attachDebugFrameFromPath:path color:[SKColor redColor]];
+    //[_jugador skt_attachDebugFrameFromPath:path color:[SKColor redColor]];
     _jugador.physicsBody.categoryBitMask = categoriaEntidadJugador;
     _jugador.physicsBody.collisionBitMask = 0;
     _jugador.physicsBody.contactTestBitMask = categoriaEntidadObstaculo | categoriaEntidadFondo;
@@ -131,6 +147,7 @@ static const float kSiempreDelay = 1.5;
 
 - (void)flapNyanCat
 {
+    [self runAction:_accionFlap];
     _velocidadJugador = CGPointMake(0, kImpulso);
 }
 
@@ -160,7 +177,7 @@ static const float kSiempreDelay = 1.5;
     
     sprite.physicsBody = [SKPhysicsBody bodyWithPolygonFromPath:path];
     
-    [sprite skt_attachDebugFrameFromPath:path color:[SKColor redColor]];
+    //[sprite skt_attachDebugFrameFromPath:path color:[SKColor redColor]];
     sprite.physicsBody.categoryBitMask = categoriaEntidadObstaculo;
     sprite.physicsBody.collisionBitMask = 0;
     sprite.physicsBody.contactTestBitMask = categoriaEntidadJugador;
@@ -230,8 +247,8 @@ static const float kSiempreDelay = 1.5;
             break;
             
         case EstadoJuegoTutorial:
+            [self cambiarAJugar];
             break;
-            
         case EstadoJuegoJugar:
             [self flapNyanCat];
             break;
@@ -248,6 +265,13 @@ static const float kSiempreDelay = 1.5;
         default:
             break;
     }
+}
+
+- (void)asignarSonidos
+{
+    _accionFlap = [SKAction playSoundFileNamed:@"flapping.wav" waitForCompletion:NO];
+    _accionCaer = [SKAction playSoundFileNamed:@"falling.wav" waitForCompletion:NO];
+    _accionChoco = [SKAction playSoundFileNamed:@"whack.wav" waitForCompletion:NO];
 }
 
 -(void)update:(CFTimeInterval)currentTime
@@ -300,7 +324,7 @@ static const float kSiempreDelay = 1.5;
         _velocidadJugador = CGPointZero;
         _jugador.zRotation = DegreesToRadians(-90);
         _jugador.position = CGPointMake(_jugador.position.x, _limiteComienzo + _jugador.size.width);
-        [self runAction:_accionChocarFondo];
+        [self runAction:_accionChoco];
         [self cambiarAMostrarPuntaje];
     }
 }
@@ -316,10 +340,47 @@ static const float kSiempreDelay = 1.5;
 - (void)cambiarCaidaLibre
 {
     _estadoJuego = EstadoJuegoColision;
-    [self runAction:[SKAction sequence:@[[SKAction waitForDuration:0.1],_accionCaer]]];
+    [self runAction:[SKAction sequence:@[_accionChoco,[SKAction waitForDuration:0.1],_accionCaer]]];
     [_jugador removeAllActions];
     [self detenerActualizar];
 }
+
+- (void)cambiarANuevoJuego
+{
+    SKScene *newScene = [[FNCMyScene alloc]initWithSize:self.size];
+    SKTransition *transition = [SKTransition fadeWithColor:[SKColor blackColor] duration:0.5];
+    [self.view presentScene:newScene transition:transition];
+}
+
+- (void)cambiarAGameOver
+{
+    _estadoJuego = EstadoJuegoGameOver;
+}
+
+- (void)cambiarATutorial
+{
+    _estadoJuego = EstadoJuegoTutorial;
+    [self asignarFondo];
+    [self asignarJugador];
+    //[self actualizarObstaculos];
+    [self asignarSonidos];
+    [self asignarTutorial];
+}
+
+- (void)cambiarAJugar
+{
+    _estadoJuego = EstadoJuegoJugar;
+    [_nodoMundo enumerateChildNodesWithName:@"Tutorial" usingBlock:^(SKNode *node, BOOL *stop) {
+        [node runAction:[SKAction sequence:@[
+                                             [SKAction fadeOutWithDuration:0.5],
+                                             [SKAction removeFromParent]
+                                             ]]];
+    }];
+    
+    [self actualizarObstaculos];
+    [self flapNyanCat];
+}
+
 
 - (void)actualizarJugador
 {

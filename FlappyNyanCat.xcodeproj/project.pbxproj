@@ -36,6 +36,7 @@
 		A6DB67E9192D34D9004A9983 /* flapping.wav in Resources */ = {isa = PBXBuildFile; fileRef = A6DB67DD192D34D9004A9983 /* flapping.wav */; };
 		A6DB67EA192D34D9004A9983 /* whack.wav in Resources */ = {isa = PBXBuildFile; fileRef = A6DB67DE192D34D9004A9983 /* whack.wav */; };
 		A6DB67EB192D34D9004A9983 /* sprites.atlas in Resources */ = {isa = PBXBuildFile; fileRef = A6DB67DF192D34D9004A9983 /* sprites.atlas */; };
+		A6DB67ED192E858E004A9983 /* falling.wav in Resources */ = {isa = PBXBuildFile; fileRef = A6DB67EC192E858E004A9983 /* falling.wav */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,6 +94,7 @@
 		A6DB67DD192D34D9004A9983 /* flapping.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = flapping.wav; sourceTree = "<group>"; };
 		A6DB67DE192D34D9004A9983 /* whack.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = whack.wav; sourceTree = "<group>"; };
 		A6DB67DF192D34D9004A9983 /* sprites.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = sprites.atlas; sourceTree = "<group>"; };
+		A6DB67EC192E858E004A9983 /* falling.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = falling.wav; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -260,6 +262,7 @@
 		A6DB67DC192D34D9004A9983 /* Sonidos */ = {
 			isa = PBXGroup;
 			children = (
+				A6DB67EC192E858E004A9983 /* falling.wav */,
 				A6DB67DD192D34D9004A9983 /* flapping.wav */,
 				A6DB67DE192D34D9004A9983 /* whack.wav */,
 			);
@@ -351,6 +354,7 @@
 				A6DB67A7192D3363004A9983 /* Spaceship.png in Resources */,
 				A6DB67EA192D34D9004A9983 /* whack.wav in Resources */,
 				A6DB679F192D3363004A9983 /* Main.storyboard in Resources */,
+				A6DB67ED192E858E004A9983 /* falling.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
