@@ -39,10 +39,20 @@ static const float kSiempreDelay = 1.5;
     float _limiteComienzo;
     float _limiteAltura;
     
+    BOOL _chocoFondo;
+    BOOL _chocoObstaculo;
+    
+    SKAction *_accionFlap;
+    SKAction *_accionCaer;
+    SKAction *_accionChocarFondo;
+    
+    
     CGPoint _velocidadJugador;
     
     NSTimeInterval _ultimaVez;
     NSTimeInterval _dt;
+    
+    EstadoJuego _estadoJuego;
 }
 
 -(id)initWithSize:(CGSize)size {    
@@ -53,6 +63,12 @@ static const float kSiempreDelay = 1.5;
         [self asignarFondo];
         [self asignarJugador];
         [self actualizarObstaculos];
+        
+        _estadoJuego = EstadoJuegoJugar;
+        self.physicsWorld.gravity = CGVectorMake(0, 0);
+        self.physicsWorld.contactDelegate = self;
+        
+        [self flapNyanCat];
     }
     return self;
 }
@@ -88,6 +104,29 @@ static const float kSiempreDelay = 1.5;
     _jugador.position = CGPointMake(self.size.width * 0.2, _limiteAltura * 0.4 + _limiteComienzo);
     _jugador.zPosition = CapaJugador;
     [_nodoMundo addChild:_jugador];
+    
+    CGFloat offsetX = _jugador.frame.size.width * _jugador.anchorPoint.x;
+    CGFloat offsetY = _jugador.frame.size.height * _jugador.anchorPoint.y;
+    
+    CGMutablePathRef path = CGPathCreateMutable();
+    
+    CGPathMoveToPoint(path, NULL, 0 - offsetX, 40 - offsetY);
+    CGPathAddLineToPoint(path, NULL, 108 - offsetX, 40 - offsetY);
+    CGPathAddLineToPoint(path, NULL, 118 - offsetX, 27 - offsetY);
+    CGPathAddLineToPoint(path, NULL, 117 - offsetX, 18 - offsetY);
+    CGPathAddLineToPoint(path, NULL, 111 - offsetX, 14 - offsetY);
+    CGPathAddLineToPoint(path, NULL, 0 - offsetX, 12 - offsetY);
+    
+    CGPathCloseSubpath(path);
+    
+    _jugador.physicsBody = [SKPhysicsBody bodyWithPolygonFromPath:path];
+    
+    [_jugador skt_attachDebugFrameFromPath:path color:[SKColor redColor]];
+    _jugador.physicsBody.categoryBitMask = categoriaEntidadJugador;
+    _jugador.physicsBody.collisionBitMask = 0;
+    _jugador.physicsBody.contactTestBitMask = categoriaEntidadObstaculo | categoriaEntidadFondo;
+    
+    
 }
 
 - (void)flapNyanCat
@@ -95,10 +134,37 @@ static const float kSiempreDelay = 1.5;
     _velocidadJugador = CGPointMake(0, kImpulso);
 }
 
+
 - (SKSpriteNode *)crearObstaculo
 {
     SKSpriteNode *sprite = [SKSpriteNode spriteNodeWithImageNamed:@"Cactus"];
     sprite.zPosition = CapaObstaculo;
+    
+    
+    CGFloat offsetX = sprite.frame.size.width * sprite.anchorPoint.x;
+    CGFloat offsetY = sprite.frame.size.height * sprite.anchorPoint.y;
+    
+    CGMutablePathRef path = CGPathCreateMutable();
+    
+    CGPathMoveToPoint(path, NULL, 7 - offsetX, 316 - offsetY);
+    CGPathAddLineToPoint(path, NULL, 61 - offsetX, 316 - offsetY);
+    CGPathAddLineToPoint(path, NULL, 61 - offsetX, 280 - offsetY);
+    CGPathAddLineToPoint(path, NULL, 60 - offsetX, 202 - offsetY);
+    CGPathAddLineToPoint(path, NULL, 58 - offsetX, 136 - offsetY);
+    CGPathAddLineToPoint(path, NULL, 59 - offsetX, 0 - offsetY);
+    CGPathAddLineToPoint(path, NULL, 58 - offsetX, 0 - offsetY);
+    CGPathAddLineToPoint(path, NULL, 34 - offsetX, 0 - offsetY);
+    CGPathAddLineToPoint(path, NULL, 8 - offsetX, 0 - offsetY);
+    
+    CGPathCloseSubpath(path);
+    
+    sprite.physicsBody = [SKPhysicsBody bodyWithPolygonFromPath:path];
+    
+    [sprite skt_attachDebugFrameFromPath:path color:[SKColor redColor]];
+    sprite.physicsBody.categoryBitMask = categoriaEntidadObstaculo;
+    sprite.physicsBody.collisionBitMask = 0;
+    sprite.physicsBody.contactTestBitMask = categoriaEntidadJugador;
+    
     return sprite;
 }
 
@@ -112,10 +178,12 @@ static const float kSiempreDelay = 1.5;
     float obstaculoInfMax = (_limiteComienzo - obstaculoInferior.size.height/2) + _limiteAltura * kParteSuperior;
     
     obstaculoInferior.position = CGPointMake(commX, RandomFloatRange(obstaculoInfMin, obstaculoInfMax));
+    obstaculoInferior.name = @"ObstaculoInferior";
     [_nodoMundo addChild:obstaculoInferior];
     
     
     SKSpriteNode *obstaculoSuperior = [self crearObstaculo];
+    obstaculoSuperior.name = @"ObstaculoSuperior";
     obstaculoSuperior.zRotation = DegreesToRadians(180);
     obstaculoSuperior.position = CGPointMake(commX, obstaculoInferior.position.y + obstaculoInferior.size.height/2 + obstaculoSuperior.size.height/2 + _jugador.size.height * kEspacioObstaculos);
     
@@ -140,20 +208,117 @@ static const float kSiempreDelay = 1.5;
     SKAction *mostarSecuencia = [SKAction sequence:@[mostrar, siempreDelay]];
     SKAction *siempreMostrar = [SKAction repeatActionForever:mostarSecuencia];
     SKAction *todasSecuencias = [SKAction sequence:@[primerDelay, siempreMostrar]];
-    [self runAction:todasSecuencias];
+    [self runAction:todasSecuencias withKey:@"Mostrar"];
+}
+
+- (void)detenerActualizar
+{
+    [self removeActionForKey:@"Mostrar"];
+    [_nodoMundo enumerateChildNodesWithName:@"ObstaculoSuperior" usingBlock:^(SKNode *node, BOOL *stop) {
+        [node removeAllActions];
+    }];
+    
+    [_nodoMundo enumerateChildNodesWithName:@"ObstaculoInferior" usingBlock:^(SKNode *node, BOOL *stop) {
+        [node removeAllActions];
+    }];
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    [self flapNyanCat];
+    switch (_estadoJuego) {
+        case EstadoJuegoMenuPrincipal:
+            break;
+            
+        case EstadoJuegoTutorial:
+            break;
+            
+        case EstadoJuegoJugar:
+            [self flapNyanCat];
+            break;
+            
+        case EstadoJuegoColision:
+            break;
+            
+        case EstadoJuegoMostandoPuntaje:
+            break;
+            
+        case EstadoJuegoGameOver:
+            break;
+            
+        default:
+            break;
+    }
 }
 
 -(void)update:(CFTimeInterval)currentTime
 {
     _dt = (_ultimaVez? currentTime - _ultimaVez: 0);
     _ultimaVez = currentTime;
-    [self actualizarJugador];
-    [self actualizarFondo];
+    
+    switch (_estadoJuego) {
+        case EstadoJuegoMenuPrincipal:
+        break;
+            
+        case EstadoJuegoTutorial:
+        break;
+            
+        case EstadoJuegoJugar:
+            [self actualizarJugador];
+            [self actualizarFondo];
+            [self verificarChocoFondo];
+            [self verificarChocoObstaculo];
+        break;
+            
+        case EstadoJuegoColision:
+            [self verificarChocoFondo];
+            [self actualizarJugador];
+        break;
+            
+        case EstadoJuegoMostandoPuntaje:
+        break;
+            
+        case EstadoJuegoGameOver:
+        break;
+            
+        default:
+            break;
+    }
+    
+}
+
+- (void)cambiarAMostrarPuntaje
+{
+    _estadoJuego = EstadoJuegoMostandoPuntaje;
+    [_jugador removeAllActions];
+    [self detenerActualizar];
+}
+
+- (void)verificarChocoFondo
+{
+    if (_chocoFondo) {
+        _chocoFondo = NO;
+        _velocidadJugador = CGPointZero;
+        _jugador.zRotation = DegreesToRadians(-90);
+        _jugador.position = CGPointMake(_jugador.position.x, _limiteComienzo + _jugador.size.width);
+        [self runAction:_accionChocarFondo];
+        [self cambiarAMostrarPuntaje];
+    }
+}
+
+- (void)verificarChocoObstaculo
+{
+    if (_chocoObstaculo) {
+        _chocoObstaculo = NO;
+        [self cambiarCaidaLibre];
+    }
+}
+
+- (void)cambiarCaidaLibre
+{
+    _estadoJuego = EstadoJuegoColision;
+    [self runAction:[SKAction sequence:@[[SKAction waitForDuration:0.1],_accionCaer]]];
+    [_jugador removeAllActions];
+    [self detenerActualizar];
 }
 
 - (void)actualizarJugador
@@ -185,5 +350,25 @@ static const float kSiempreDelay = 1.5;
         
     }];
 }
+
+#pragma mark - Contact Delegates
+- (void)didBeginContact:(SKPhysicsContact *)contact
+{
+    SKPhysicsBody *otro = (contact.bodyA.categoryBitMask == categoriaEntidadJugador ? contact.bodyB : contact.bodyA);
+    
+    if (otro.categoryBitMask == categoriaEntidadFondo) {
+        _chocoFondo = YES;
+        return;
+    }
+    
+    if (otro.categoryBitMask == categoriaEntidadObstaculo) {
+        _chocoObstaculo = YES;
+        return;
+    }
+    
+    
+}
+
+
 
 @end

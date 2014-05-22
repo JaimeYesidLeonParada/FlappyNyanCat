@@ -8,6 +8,16 @@
 
 #import <SpriteKit/SpriteKit.h>
 
-@interface FNCMyScene : SKScene
+typedef NS_ENUM(int, EstadoJuego) {
+    EstadoJuegoMenuPrincipal,
+    EstadoJuegoTutorial,
+    EstadoJuegoJugar,
+    EstadoJuegoColision,
+    EstadoJuegoMostandoPuntaje,
+    EstadoJuegoGameOver
+};
+
+@interface FNCMyScene : SKScene <SKPhysicsContactDelegate>
+
 
 @end
