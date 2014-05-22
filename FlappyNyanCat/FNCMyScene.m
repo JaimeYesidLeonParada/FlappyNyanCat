@@ -32,6 +32,10 @@ static const float kParteSuperior = 0.6;
 static const float kEspacioObstaculos = 2.4;
 static const float kPrimerDelay = 1.75;
 static const float kSiempreDelay = 1.5;
+static const float kMargen = 20.0;
+static NSString *const kNombreFont = @"AmericanTypewriter-Bold";
+
+
 
 @implementation FNCMyScene
 {
@@ -46,6 +50,9 @@ static const float kSiempreDelay = 1.5;
     SKAction *_accionFlap;
     SKAction *_accionCaer;
     SKAction *_accionChoco;
+    
+    SKLabelNode *_etiquetaPuntaje;
+    int _puntaje;
     
     
     CGPoint _velocidadJugador;
@@ -274,6 +281,18 @@ static const float kSiempreDelay = 1.5;
     _accionChoco = [SKAction playSoundFileNamed:@"whack.wav" waitForCompletion:NO];
 }
 
+- (void)asignarEtiquetaPuntaje
+{
+    _etiquetaPuntaje = [[SKLabelNode alloc]initWithFontNamed:kNombreFont];
+    _etiquetaPuntaje.fontColor = [UIColor colorWithRed:101.0/255.0 green:71.0/255.0 blue:73.0/255.0 alpha:1.0];
+    _etiquetaPuntaje.position = CGPointMake(self.size.width/2, self.size.height - kMargen);
+    _etiquetaPuntaje.text = @"0";
+    _etiquetaPuntaje.verticalAlignmentMode = SKLabelVerticalAlignmentModeTop;
+    _etiquetaPuntaje.zPosition = CapaUI;
+    [_nodoMundo addChild:_etiquetaPuntaje];
+}
+
+
 -(void)update:(CFTimeInterval)currentTime
 {
     _dt = (_ultimaVez? currentTime - _ultimaVez: 0);
@@ -362,7 +381,7 @@ static const float kSiempreDelay = 1.5;
     _estadoJuego = EstadoJuegoTutorial;
     [self asignarFondo];
     [self asignarJugador];
-    //[self actualizarObstaculos];
+    [self asignarEtiquetaPuntaje];
     [self asignarSonidos];
     [self asignarTutorial];
 }
