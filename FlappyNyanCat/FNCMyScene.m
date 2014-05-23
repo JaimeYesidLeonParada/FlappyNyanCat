@@ -34,7 +34,7 @@ static const float kPrimerDelay = 1.75;
 static const float kSiempreDelay = 1.5;
 static const float kMargen = 20.0;
 static NSString *const kNombreFont = @"AmericanTypewriter-Bold";
-
+static const float kAnimDalay = 0.3;
 
 
 @implementation FNCMyScene
@@ -73,10 +73,9 @@ static NSString *const kNombreFont = @"AmericanTypewriter-Bold";
         self.physicsWorld.gravity = CGVectorMake(0, 0);
         self.physicsWorld.contactDelegate = self;
         
-        //[self flapNyanCat];
+        //[self cambiarATutorial];
         
-        [self cambiarATutorial];
-        
+        [self cambiarAMenuPrincipal];
     }
     return self;
 }
@@ -148,8 +147,330 @@ static NSString *const kNombreFont = @"AmericanTypewriter-Bold";
     _jugador.physicsBody.categoryBitMask = categoriaEntidadJugador;
     _jugador.physicsBody.collisionBitMask = 0;
     _jugador.physicsBody.contactTestBitMask = categoriaEntidadObstaculo | categoriaEntidadFondo;
+}
+
+- (void)asignarSonidos
+{
+    _accionFlap = [SKAction playSoundFileNamed:@"flapping.wav" waitForCompletion:NO];
+    _accionCaer = [SKAction playSoundFileNamed:@"falling.wav" waitForCompletion:NO];
+    _accionChoco = [SKAction playSoundFileNamed:@"whack.wav" waitForCompletion:NO];
+}
+
+- (void)asignarEtiquetaPuntaje
+{
+    _etiquetaPuntaje = [[SKLabelNode alloc]initWithFontNamed:kNombreFont];
+    _etiquetaPuntaje.fontColor = [UIColor colorWithRed:101.0/255.0 green:71.0/255.0 blue:73.0/255.0 alpha:1.0];
+    _etiquetaPuntaje.position = CGPointMake(self.size.width/2, self.size.height - kMargen);
+    _etiquetaPuntaje.text = @"0";
+    _etiquetaPuntaje.verticalAlignmentMode = SKLabelVerticalAlignmentModeTop;
+    _etiquetaPuntaje.zPosition = CapaUI;
+    [_nodoMundo addChild:_etiquetaPuntaje];
+}
+
+- (void)asignarMejorPuntaje:(int)mejorPuntaje
+{
+    [[NSUserDefaults standardUserDefaults]setInteger:mejorPuntaje forKey:@"mejorPuntaje"];
+    [[NSUserDefaults standardUserDefaults]synchronize];
+}
+
+- (void)asignarScoreCard
+{
+    if (_puntaje > [self mejorPuntaje]) {
+        [self asignarMejorPuntaje:_puntaje];
+    }
+    SKSpriteNode *scorecard = [SKSpriteNode spriteNodeWithImageNamed:@"Scorecard"];
+    scorecard.position = CGPointMake(self.size.width * 0.5, self.size.height * 0.5);
+    scorecard.name = @"Tutorial";
+    scorecard.zPosition = CapaUI;
+    [_nodoMundo addChild:scorecard];
     
     
+    SKLabelNode *ultimoPuntaje = [[SKLabelNode alloc]initWithFontNamed:kNombreFont];
+    ultimoPuntaje.fontColor = [SKColor blackColor];
+    ultimoPuntaje.position = CGPointMake(-scorecard.size.width * 0.25,  -scorecard.size.height * 0.25);
+    ultimoPuntaje.text = [NSString stringWithFormat:@"%d", _puntaje];
+    [scorecard addChild:ultimoPuntaje];
+    
+    SKLabelNode *mejorPuntaje = [[SKLabelNode alloc]initWithFontNamed:kNombreFont];
+    mejorPuntaje.fontColor = [SKColor blackColor];
+    mejorPuntaje.position = CGPointMake(scorecard.size.width * 0.25,  -scorecard.size.height * 0.25);
+    mejorPuntaje.text = [NSString stringWithFormat:@"%d", [self mejorPuntaje]];
+    [scorecard addChild:mejorPuntaje];
+    
+    SKSpriteNode *gameOver = [SKSpriteNode spriteNodeWithImageNamed:@"GameOver"];
+    gameOver.position = CGPointMake(self.size.width/2, self.size.height/2 + scorecard.size.height/2 + kMargen + gameOver.size.height/2);
+    gameOver.zPosition = CapaUI;
+    [_nodoMundo addChild:gameOver];
+    
+    SKSpriteNode *botonOK = [SKSpriteNode spriteNodeWithImageNamed:@"Button"];
+    botonOK.position = CGPointMake(self.size.width * 0.25, self.size.height/2 -scorecard.size.height -kMargen -botonOK.size.height/2);
+    botonOK.zPosition = CapaUI;
+    [_nodoMundo addChild:botonOK];
+    
+    SKSpriteNode *ok = [SKSpriteNode spriteNodeWithImageNamed:@"OK"];
+    ok.position = CGPointZero;
+    ok.zPosition = CapaUI;
+    [botonOK addChild:ok];
+    
+    SKSpriteNode *botonCompartir = [SKSpriteNode spriteNodeWithImageNamed:@"Button"];
+    botonCompartir.position = CGPointMake(self.size.width * 0.75, self.size.height/2 -scorecard.size.height -kMargen -botonCompartir.size.height/2);
+    botonCompartir.zPosition = CapaUI;
+    [_nodoMundo addChild:botonCompartir];
+    
+    SKSpriteNode *compartir = [SKSpriteNode spriteNodeWithImageNamed:@"Share"];
+    compartir.position = CGPointZero;
+    compartir.zPosition = CapaUI;
+    [botonCompartir addChild:compartir];
+    
+    gameOver.scale = 0;
+    gameOver.alpha = 0;
+    
+    SKAction *group = [SKAction group:@[
+                                        [SKAction fadeInWithDuration:kAnimDalay],
+                                        [SKAction scaleTo:1.0 duration:kAnimDalay]
+                                        ]];
+    group.timingMode = SKActionTimingEaseInEaseOut;
+    [gameOver runAction:[SKAction sequence:@[
+                                             [SKAction fadeInWithDuration:kAnimDalay],
+                                             group
+                                             ]]];
+    scorecard.position = CGPointMake(self.size.width * 0.5, -scorecard.size.height/2);
+    
+    SKAction *moverA = [SKAction moveTo:CGPointMake(self.size.width/2, self.size.height/2) duration:kAnimDalay];
+    moverA.timingMode = SKActionTimingEaseInEaseOut;
+    [scorecard runAction:[SKAction sequence:@[
+                                              [SKAction waitForDuration:kAnimDalay*2],
+                                              moverA
+                                              ]]];
+    
+    
+    botonOK.alpha = 0;
+    botonCompartir.alpha = 0;
+    
+    SKAction *mostrar = [SKAction sequence:@[
+                                             [SKAction waitForDuration:kAnimDalay*3],
+                                             [SKAction fadeInWithDuration:kAnimDalay]
+                                             ]];
+    [botonOK runAction:mostrar];
+    [botonCompartir runAction:mostrar];
+    
+    SKAction *aparecer = [SKAction sequence:@[
+                                              [SKAction waitForDuration:kAnimDalay],
+                                              _accionChoco,
+                                              [SKAction waitForDuration:kAnimDalay],
+                                              _accionChoco,
+                                              [SKAction waitForDuration:kAnimDalay],
+                                              _accionChoco,
+                                              [SKAction runBlock:^{
+        [self cambiarAGameOver];
+    }],
+                                              ]];
+    
+    [self runAction:aparecer];
+}
+
+- (void)asignarMenuPrincipal
+{
+    SKSpriteNode *logo = [SKSpriteNode spriteNodeWithImageNamed:@"Logo"];
+    logo.position = CGPointMake(self.size.width / 2, self.size.height *0.8);
+    logo.zPosition = CapaUI;
+    logo.name = @"MenuP";
+    [_nodoMundo addChild:logo];
+    
+    SKSpriteNode *botonPlay = [SKSpriteNode spriteNodeWithImageNamed:@"Button.png"];
+    botonPlay.position = CGPointMake(self.size.width * 0.25, self.size.height * 0.35);
+    botonPlay.zPosition = CapaUI;
+    botonPlay.name = @"MenuP";
+    [_nodoMundo addChild:botonPlay];
+    
+    SKSpriteNode *play = [SKSpriteNode spriteNodeWithImageNamed:@"Play"];
+    play.position = CGPointMake(0, 0);
+    [botonPlay addChild:play];
+    
+    SKSpriteNode *botonRate = [SKSpriteNode spriteNodeWithImageNamed:@"Button.png"];
+    botonRate.position = CGPointMake(self.size.width * 0.75, self.size.height * 0.35);
+    botonRate.zPosition = CapaUI;
+    botonRate.name = @"MenuP";
+    [_nodoMundo addChild:botonRate];
+    
+    SKSpriteNode *rate = [SKSpriteNode spriteNodeWithImageNamed:@"Rate"];
+    rate.position = CGPointMake(0, 0);
+    [botonRate addChild:rate];
+    
+    SKSpriteNode *aprender = [SKSpriteNode spriteNodeWithImageNamed:@"button_learn"];
+    aprender.position = CGPointMake(self.size.width * 0.5, aprender.size.height / 2 + kMargen + 50);
+    aprender.zPosition = CapaUI;
+    aprender.name = @"MenuP";
+    [_nodoMundo addChild:aprender];
+    
+    SKAction *scaleUp = [SKAction scaleTo:1.0 duration:0.75];
+    scaleUp.timingMode = SKActionTimingEaseInEaseOut;
+    SKAction *scaleDown = [SKAction scaleTo:0.98 duration:0.75];
+    scaleDown.timingMode = SKActionTimingEaseInEaseOut;
+    
+    [aprender runAction:[SKAction repeatActionForever:[SKAction sequence:@[scaleUp, scaleDown]]]];
+}
+
+
+#pragma mark - Actualizar
+
+- (void)actualizarObstaculos
+{
+    SKAction *primerDelay = [SKAction waitForDuration:kPrimerDelay];
+    SKAction *mostrar = [SKAction performSelector:@selector(mostrarObstaculos) onTarget:self];
+    SKAction *siempreDelay = [SKAction waitForDuration:kSiempreDelay];
+    SKAction *mostarSecuencia = [SKAction sequence:@[mostrar, siempreDelay]];
+    SKAction *siempreMostrar = [SKAction repeatActionForever:mostarSecuencia];
+    SKAction *todasSecuencias = [SKAction sequence:@[primerDelay, siempreMostrar]];
+    [self runAction:todasSecuencias withKey:@"Mostrar"];
+}
+
+- (void)actualizarPuntaje
+{
+    [_nodoMundo enumerateChildNodesWithName:@"ObstaculoInferior" usingBlock:^(SKNode *node, BOOL *stop) {
+        SKSpriteNode *obstaculo = (SKSpriteNode*)node;
+        NSNumber *paso = obstaculo.userData[@"Paso"];
+        
+        if (paso && paso.boolValue) {
+            return;
+        }
+        
+        if (_jugador.position.x > obstaculo.position.x + obstaculo.size.width/2) {
+            _puntaje++;
+            _etiquetaPuntaje.text = [NSString stringWithFormat:@"%d", _puntaje];
+            obstaculo.userData[@"Paso"] = @YES;
+        }
+    }];
+}
+
+
+- (void)actualizarJugador
+{
+    CGPoint gravedad = CGPointMake(0, kGravedad);
+    CGPoint pasoGravedad = CGPointMultiplyScalar(gravedad, _dt);
+    _velocidadJugador = CGPointAdd(_velocidadJugador, pasoGravedad);
+    
+    CGPoint pasoVelocidad = CGPointMultiplyScalar(_velocidadJugador, _dt);
+    _jugador.position = CGPointAdd(_jugador.position, pasoVelocidad);
+    
+    
+    if (_jugador.position.y - _jugador.size.height/2 <= _limiteComienzo) {
+        _jugador.position = CGPointMake(_jugador.position.x, _limiteComienzo + _jugador.size.height/2);
+    }
+    
+}
+
+- (void)actualizarFondo
+{
+    [_nodoMundo enumerateChildNodesWithName:@"Mundo" usingBlock:^(SKNode *node, BOOL *stop) {
+        SKSpriteNode *mundo = (SKSpriteNode *)node;
+        CGPoint movimiento = CGPointMake(-kVelocidadFondo * _dt, 0);
+        mundo.position = CGPointAdd(mundo.position, movimiento);
+        
+        if (mundo.position.x < -mundo.size.width) {
+            mundo.position = CGPointAdd(mundo.position, CGPointMake(mundo.size.width*kNumFondos, 0));
+        }
+        
+    }];
+}
+
+
+#pragma mark - Cambiar
+
+- (void)cambiarAMostrarPuntaje
+{
+    _estadoJuego = EstadoJuegoMostandoPuntaje;
+    [_jugador removeAllActions];
+    [self detenerActualizar];
+    [self asignarScoreCard];
+}
+
+- (void)cambiarCaidaLibre
+{
+    _estadoJuego = EstadoJuegoColision;
+    [self runAction:[SKAction sequence:@[_accionChoco,[SKAction waitForDuration:0.1],_accionCaer]]];
+    [_jugador removeAllActions];
+    [self detenerActualizar];
+}
+
+- (void)cambiarANuevoJuego
+{
+    SKScene *newScene = [[FNCMyScene alloc]initWithSize:self.size];
+    SKTransition *transition = [SKTransition fadeWithColor:[SKColor blackColor] duration:0.5];
+    [self.view presentScene:newScene transition:transition];
+}
+
+- (void)cambiarAGameOver
+{
+    _estadoJuego = EstadoJuegoGameOver;
+}
+
+- (void)cambiarATutorial
+{
+    _estadoJuego = EstadoJuegoTutorial;
+    [self asignarFondo];
+    [self asignarJugador];
+    [self asignarEtiquetaPuntaje];
+    [self asignarSonidos];
+    [self asignarTutorial];
+    
+    [_nodoMundo enumerateChildNodesWithName:@"MenuP" usingBlock:^(SKNode *node, BOOL *stop) {
+        [node runAction:[SKAction sequence:@[
+                                             [SKAction fadeOutWithDuration:0.3],
+                                             [SKAction removeFromParent]
+                                             ]]];
+    }];
+}
+
+- (void)cambiarAJugar
+{
+    _estadoJuego = EstadoJuegoJugar;
+    [_nodoMundo enumerateChildNodesWithName:@"Tutorial" usingBlock:^(SKNode *node, BOOL *stop) {
+        [node runAction:[SKAction sequence:@[
+                                             [SKAction fadeOutWithDuration:0.5],
+                                             [SKAction removeFromParent]
+                                             ]]];
+    }];
+    
+    [self actualizarObstaculos];
+    [self flapNyanCat];
+}
+
+- (void)cambiarAMenuPrincipal
+{
+    _estadoJuego = EstadoJuegoMenuPrincipal;
+    [self asignarFondo];
+    [self asignarSonidos];
+    [self asignarMenuPrincipal];
+}
+
+
+#pragma mark Verificar
+
+- (void)verificarChocoFondo
+{
+    if (_chocoFondo) {
+        _chocoFondo = NO;
+        _velocidadJugador = CGPointZero;
+        _jugador.zRotation = DegreesToRadians(-90);
+        _jugador.position = CGPointMake(_jugador.position.x, _limiteComienzo + _jugador.size.width/2);
+        
+        [self cambiarAMostrarPuntaje];
+    }
+}
+
+- (void)verificarChocoObstaculo
+{
+    if(_chocoObstaculo)
+    {
+        _chocoObstaculo = NO;
+        _velocidadJugador = CGPointZero;
+        _jugador.zRotation = DegreesToRadians(-90);
+        _jugador.Position = CGPointMake(_jugador.position.x, _limiteComienzo + _jugador.size.width/2);
+        [self cambiarCaidaLibre];
+        [self cambiarAMostrarPuntaje];
+    }
+
 }
 
 - (void)flapNyanCat
@@ -225,16 +546,7 @@ static NSString *const kNombreFont = @"AmericanTypewriter-Bold";
 }
 
 
-- (void)actualizarObstaculos
-{
-    SKAction *primerDelay = [SKAction waitForDuration:kPrimerDelay];
-    SKAction *mostrar = [SKAction performSelector:@selector(mostrarObstaculos) onTarget:self];
-    SKAction *siempreDelay = [SKAction waitForDuration:kSiempreDelay];
-    SKAction *mostarSecuencia = [SKAction sequence:@[mostrar, siempreDelay]];
-    SKAction *siempreMostrar = [SKAction repeatActionForever:mostarSecuencia];
-    SKAction *todasSecuencias = [SKAction sequence:@[primerDelay, siempreMostrar]];
-    [self runAction:todasSecuencias withKey:@"Mostrar"];
-}
+
 
 - (void)detenerActualizar
 {
@@ -250,8 +562,19 @@ static NSString *const kNombreFont = @"AmericanTypewriter-Bold";
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    UITouch *touch = [touches anyObject];
+    CGPoint touchLugar = [touch locationInNode:self];
+    
+    
     switch (_estadoJuego) {
         case EstadoJuegoMenuPrincipal:
+            if (touchLugar.y < self.size.width * 0.35) {
+                [self aprender];
+            }else if (touchLugar.x < self.size.width * 0.6){
+                [self cambiarATutorial];
+            }
+            
+            
             break;
             
         case EstadoJuegoTutorial:
@@ -268,6 +591,7 @@ static NSString *const kNombreFont = @"AmericanTypewriter-Bold";
             break;
             
         case EstadoJuegoGameOver:
+            [self cambiarANuevoJuego];
             break;
             
         default:
@@ -275,28 +599,25 @@ static NSString *const kNombreFont = @"AmericanTypewriter-Bold";
     }
 }
 
-- (void)asignarSonidos
-{
-    _accionFlap = [SKAction playSoundFileNamed:@"flapping.wav" waitForCompletion:NO];
-    _accionCaer = [SKAction playSoundFileNamed:@"falling.wav" waitForCompletion:NO];
-    _accionChoco = [SKAction playSoundFileNamed:@"whack.wav" waitForCompletion:NO];
-}
 
-- (void)asignarEtiquetaPuntaje
-{
-    _etiquetaPuntaje = [[SKLabelNode alloc]initWithFontNamed:kNombreFont];
-    _etiquetaPuntaje.fontColor = [UIColor colorWithRed:101.0/255.0 green:71.0/255.0 blue:73.0/255.0 alpha:1.0];
-    _etiquetaPuntaje.position = CGPointMake(self.size.width/2, self.size.height - kMargen);
-    _etiquetaPuntaje.text = @"0";
-    _etiquetaPuntaje.verticalAlignmentMode = SKLabelVerticalAlignmentModeTop;
-    _etiquetaPuntaje.zPosition = CapaUI;
-    [_nodoMundo addChild:_etiquetaPuntaje];
-}
+
+
 
 
 -(void)update:(CFTimeInterval)currentTime
 {
+ 
+    /*
     _dt = (_ultimaVez? currentTime - _ultimaVez: 0);
+    _ultimaVez = currentTime;
+    */
+    
+    if (_ultimaVez) {
+        _dt = currentTime - _ultimaVez;
+    } else {
+        _dt = 0;
+    }
+
     _ultimaVez = currentTime;
     
     switch (_estadoJuego) {
@@ -323,6 +644,7 @@ static NSString *const kNombreFont = @"AmericanTypewriter-Bold";
         break;
             
         case EstadoJuegoGameOver:
+            
         break;
             
         default:
@@ -331,162 +653,15 @@ static NSString *const kNombreFont = @"AmericanTypewriter-Bold";
     
 }
 
-- (void)cambiarAMostrarPuntaje
-{
-    _estadoJuego = EstadoJuegoMostandoPuntaje;
-    [_jugador removeAllActions];
-    [self detenerActualizar];
-}
-
-- (void)verificarChocoFondo
-{
-    if (_chocoFondo) {
-        _chocoFondo = NO;
-        _velocidadJugador = CGPointZero;
-        _jugador.zRotation = DegreesToRadians(-90);
-        _jugador.position = CGPointMake(_jugador.position.x, _limiteComienzo + _jugador.size.width);
-        [self runAction:_accionChoco];
-        [self cambiarAMostrarPuntaje];
-    }
-}
-
-- (void)verificarChocoObstaculo
-{
-    if (_chocoObstaculo) {
-        _chocoObstaculo = NO;
-        [self cambiarCaidaLibre];
-    }
-}
-
-- (void)cambiarCaidaLibre
-{
-    _estadoJuego = EstadoJuegoColision;
-    [self runAction:[SKAction sequence:@[_accionChoco,[SKAction waitForDuration:0.1],_accionCaer]]];
-    [_jugador removeAllActions];
-    [self detenerActualizar];
-}
-
-- (void)cambiarANuevoJuego
-{
-    SKScene *newScene = [[FNCMyScene alloc]initWithSize:self.size];
-    SKTransition *transition = [SKTransition fadeWithColor:[SKColor blackColor] duration:0.5];
-    [self.view presentScene:newScene transition:transition];
-}
-
-- (void)cambiarAGameOver
-{
-    _estadoJuego = EstadoJuegoGameOver;
-}
-
-- (void)cambiarATutorial
-{
-    _estadoJuego = EstadoJuegoTutorial;
-    [self asignarFondo];
-    [self asignarJugador];
-    [self asignarEtiquetaPuntaje];
-    [self asignarSonidos];
-    [self asignarTutorial];
-}
-
-- (void)cambiarAJugar
-{
-    _estadoJuego = EstadoJuegoJugar;
-    [_nodoMundo enumerateChildNodesWithName:@"Tutorial" usingBlock:^(SKNode *node, BOOL *stop) {
-        [node runAction:[SKAction sequence:@[
-                                             [SKAction fadeOutWithDuration:0.5],
-                                             [SKAction removeFromParent]
-                                             ]]];
-    }];
-    
-    [self actualizarObstaculos];
-    [self flapNyanCat];
-}
-
-- (void)actualizarPuntaje
-{
-    [_nodoMundo enumerateChildNodesWithName:@"ObstaculoInferior" usingBlock:^(SKNode *node, BOOL *stop) {
-        SKSpriteNode *obstaculo = (SKSpriteNode*)node;
-        NSNumber *paso = obstaculo.userData[@"Paso"];
-        
-        if (paso && paso.boolValue) {
-            return;
-        }
-        
-        if (_jugador.position.x > obstaculo.position.x + obstaculo.size.width/2) {
-            _puntaje++;
-            _etiquetaPuntaje.text = [NSString stringWithFormat:@"%d", _puntaje];
-            obstaculo.userData[@"Paso"] = @YES;
-        }
-    }];
-}
-
-
-- (void)actualizarJugador
-{
-    CGPoint gravedad = CGPointMake(0, kGravedad);
-    CGPoint pasoGravedad = CGPointMultiplyScalar(gravedad, _dt);
-    _velocidadJugador = CGPointAdd(_velocidadJugador, pasoGravedad);
-    
-    CGPoint pasoVelocidad = CGPointMultiplyScalar(_velocidadJugador, _dt);
-    _jugador.position = CGPointAdd(_jugador.position, pasoVelocidad);
-    
-    
-    if (_jugador.position.y - _jugador.size.height/2 <= _limiteComienzo) {
-        _jugador.position = CGPointMake(_jugador.position.x, _limiteComienzo + _jugador.size.height/2);
-    }
-    
-}
-
-- (void)actualizarFondo
-{
-    [_nodoMundo enumerateChildNodesWithName:@"Mundo" usingBlock:^(SKNode *node, BOOL *stop) {
-        SKSpriteNode *mundo = (SKSpriteNode *)node;
-        CGPoint movimiento = CGPointMake(-kVelocidadFondo * _dt, 0);
-        mundo.position = CGPointAdd(mundo.position, movimiento);
-        
-        if (mundo.position.x < -mundo.size.width) {
-            mundo.position = CGPointAdd(mundo.position, CGPointMake(mundo.size.width*kNumFondos, 0));
-        }
-        
-    }];
-}
-
-
 - (int)mejorPuntaje
 {
     return [[NSUserDefaults standardUserDefaults]integerForKey:@"mejorPuntaje"];
 }
 
-- (void)asignarMejorPuntaje:(int)mejorPuntaje
-{
-    [[NSUserDefaults standardUserDefaults]setInteger:mejorPuntaje forKey:@"mejorPuntaje"];
-    [[NSUserDefaults standardUserDefaults]synchronize];
-}
 
-- (void)asignarScoreCard
+- (void)aprender
 {
-    if (_puntaje > [self mejorPuntaje]) {
-        [self asignarMejorPuntaje:_puntaje];
-    }
-    SKSpriteNode *scorecard = [SKSpriteNode spriteNodeWithImageNamed:@"Scorecard"];
-    scorecard.position = CGPointMake(self.size.width * 0.5, self.size.height * 0.5);
-    scorecard.name = @"Tutorial";
-    scorecard.zPosition = CapaUI;
-    [_nodoMundo addChild:scorecard];
-    
-    
-    SKLabelNode *ultimoPuntaje = [[SKLabelNode alloc]initWithFontNamed:kNombreFont];
-    ultimoPuntaje.fontColor = [SKColor blackColor];
-    ultimoPuntaje.position = CGPointMake(-scorecard.size.width * 0.25,  -scorecard.size.height * 0.25);
-    ultimoPuntaje.text = [NSString stringWithFormat:@"%d", _puntaje];
-    [scorecard addChild:ultimoPuntaje];
-    
-    SKLabelNode *mejorPuntaje = [[SKLabelNode alloc]initWithFontNamed:kNombreFont];
-    mejorPuntaje.fontColor = [SKColor blackColor];
-    mejorPuntaje.position = CGPointMake(scorecard.size.width * 0.25,  -scorecard.size.height * 0.25);
-    mejorPuntaje.text = [NSString stringWithFormat:@"%d", [self mejorPuntaje]];
-    [scorecard addChild:mejorPuntaje];
-    
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"http:www.koombea.com"]]];
 }
 
 #pragma mark - Contact Delegates
