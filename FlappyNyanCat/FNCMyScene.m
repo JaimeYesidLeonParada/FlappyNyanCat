@@ -12,7 +12,8 @@ typedef NS_ENUM(int,layer) {
     CapaFondo,
     CapaObstaculo,
     CapaJugador,
-    CapaUI
+    CapaUI,
+    CapaFlash
 };
 
 typedef NS_OPTIONS(int, categoriaEntidad)
@@ -35,7 +36,10 @@ static const float kSiempreDelay = 1.5;
 static const float kMargen = 20.0;
 static NSString *const kNombreFont = @"AmericanTypewriter-Bold";
 static const float kAnimDalay = 0.3;
-
+static const int kNumerosNyanCats = 4;
+static const float kMinGrados = -90;
+static const float kMaxGrados = 25;
+static const float kVelocidadAngular = 1000;
 
 @implementation FNCMyScene
 {
@@ -43,6 +47,7 @@ static const float kAnimDalay = 0.3;
     SKNode *_nodoMundo;
     float _limiteComienzo;
     float _limiteAltura;
+    float _velocidadAngularJugador;
     
     BOOL _chocoFondo;
     BOOL _chocoObstaculo;
@@ -54,6 +59,8 @@ static const float kAnimDalay = 0.3;
     SKLabelNode *_etiquetaPuntaje;
     int _puntaje;
     
+    NSTimeInterval _ultimaVezToco;
+    float _ultimaVezY;
     
     CGPoint _velocidadJugador;
     
@@ -72,9 +79,6 @@ static const float kAnimDalay = 0.3;
         _estadoJuego = EstadoJuegoJugar;
         self.physicsWorld.gravity = CGVectorMake(0, 0);
         self.physicsWorld.contactDelegate = self;
-        
-        //[self cambiarATutorial];
-        
         [self cambiarAMenuPrincipal];
     }
     return self;
@@ -311,6 +315,25 @@ static const float kAnimDalay = 0.3;
     [aprender runAction:[SKAction repeatActionForever:[SKAction sequence:@[scaleUp, scaleDown]]]];
 }
 
+- (void)asignarAnimacionJugador
+{
+    NSMutableArray *texturas = [NSMutableArray array];
+    SKTextureAtlas *atlas = [SKTextureAtlas atlasNamed:@"sprites"];
+    
+    for (int i = 0; i < kNumerosNyanCats; i++) {
+        NSString *nombreTexturas = [NSString stringWithFormat:@"Cat%d",i];
+        [texturas addObject:[atlas textureNamed:nombreTexturas]];
+    }
+    
+    for (int i = kNumerosNyanCats - 2; i > 0; i--) {
+        NSString *nombreTexturas = [NSString stringWithFormat:@"Cat%d",i];
+        [texturas addObject:[atlas textureNamed:nombreTexturas]];
+    }
+    
+    SKAction *animacionJugador = [SKAction animateWithTextures:texturas timePerFrame:0.07];
+    [_jugador runAction:[SKAction repeatActionForever:animacionJugador]];
+    
+}
 
 #pragma mark - Actualizar
 
@@ -354,9 +377,13 @@ static const float kAnimDalay = 0.3;
     _jugador.position = CGPointAdd(_jugador.position, pasoVelocidad);
     
     
-    if (_jugador.position.y - _jugador.size.height/2 <= _limiteComienzo) {
-        _jugador.position = CGPointMake(_jugador.position.x, _limiteComienzo + _jugador.size.height/2);
+    if (_jugador.position.y < _ultimaVezY) {
+        _velocidadAngularJugador = -DegreesToRadians(kVelocidadAngular);
     }
+    
+    float pasoAngular = _velocidadAngularJugador * _dt;
+    _jugador.zRotation += pasoAngular;
+    _jugador.zRotation = MIN(MAX(_jugador.zRotation, DegreesToRadians(kMinGrados)), DegreesToRadians(kMaxGrados));
     
 }
 
@@ -388,6 +415,20 @@ static const float kAnimDalay = 0.3;
 - (void)cambiarCaidaLibre
 {
     _estadoJuego = EstadoJuegoColision;
+    
+    SKAction *terremoto = [SKAction skt_screenShakeWithNode:_nodoMundo amount:CGPointMake(0, 7.0) oscillations:10 duration:1.0];
+    [_nodoMundo runAction:terremoto];
+    
+    SKSpriteNode *nodoBlanco = [SKSpriteNode spriteNodeWithColor:[SKColor whiteColor] size:self.size];
+    nodoBlanco.position = CGPointMake(self.size.width * 0.5, self.size.height * 0.5);
+    nodoBlanco.zPosition = CapaFlash;
+    [_nodoMundo addChild:nodoBlanco];
+    [nodoBlanco runAction:[SKAction sequence:@[
+                                               [SKAction waitForDuration:0.01],
+                                               [SKAction removeFromParent]
+                                               ]]];
+    
+    
     [self runAction:[SKAction sequence:@[_accionChoco,[SKAction waitForDuration:0.1],_accionCaer]]];
     [_jugador removeAllActions];
     [self detenerActualizar];
@@ -413,6 +454,7 @@ static const float kAnimDalay = 0.3;
     [self asignarEtiquetaPuntaje];
     [self asignarSonidos];
     [self asignarTutorial];
+    [self asignarAnimacionJugador];
     
     [_nodoMundo enumerateChildNodesWithName:@"MenuP" usingBlock:^(SKNode *node, BOOL *stop) {
         [node runAction:[SKAction sequence:@[
@@ -442,6 +484,7 @@ static const float kAnimDalay = 0.3;
     [self asignarFondo];
     [self asignarSonidos];
     [self asignarMenuPrincipal];
+    [self asignarAnimacionJugador];
 }
 
 
@@ -477,6 +520,9 @@ static const float kAnimDalay = 0.3;
 {
     [self runAction:_accionFlap];
     _velocidadJugador = CGPointMake(0, kImpulso);
+    _velocidadAngularJugador = DegreesToRadians(kVelocidadAngular);
+    _ultimaVezToco = _ultimaVez;
+    _ultimaVezY = _jugador.position.y;
 }
 
 
