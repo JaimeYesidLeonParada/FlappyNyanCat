@@ -463,6 +463,32 @@ static NSString *const kNombreFont = @"AmericanTypewriter-Bold";
     [[NSUserDefaults standardUserDefaults]synchronize];
 }
 
+- (void)asignarScoreCard
+{
+    if (_puntaje > [self mejorPuntaje]) {
+        [self asignarMejorPuntaje:_puntaje];
+    }
+    SKSpriteNode *scorecard = [SKSpriteNode spriteNodeWithImageNamed:@"Scorecard"];
+    scorecard.position = CGPointMake(self.size.width * 0.5, self.size.height * 0.5);
+    scorecard.name = @"Tutorial";
+    scorecard.zPosition = CapaUI;
+    [_nodoMundo addChild:scorecard];
+    
+    
+    SKLabelNode *ultimoPuntaje = [[SKLabelNode alloc]initWithFontNamed:kNombreFont];
+    ultimoPuntaje.fontColor = [SKColor blackColor];
+    ultimoPuntaje.position = CGPointMake(-scorecard.size.width * 0.25,  -scorecard.size.height * 0.25);
+    ultimoPuntaje.text = [NSString stringWithFormat:@"%d", _puntaje];
+    [scorecard addChild:ultimoPuntaje];
+    
+    SKLabelNode *mejorPuntaje = [[SKLabelNode alloc]initWithFontNamed:kNombreFont];
+    mejorPuntaje.fontColor = [SKColor blackColor];
+    mejorPuntaje.position = CGPointMake(scorecard.size.width * 0.25,  -scorecard.size.height * 0.25);
+    mejorPuntaje.text = [NSString stringWithFormat:@"%d", [self mejorPuntaje]];
+    [scorecard addChild:mejorPuntaje];
+    
+}
+
 #pragma mark - Contact Delegates
 - (void)didBeginContact:(SKPhysicsContact *)contact
 {
